@@ -39,9 +39,11 @@ https://github.com/CiscoDevNet/AppDynamicsTomcatSA.git
 
 SCP scripts/dbvm/* to DBVM /tmp dir
 
-chmod +x /tmp/installmysql.sh
+SSH to DBVM and Run:
 
-SSH to DBVM and Run: /tmp/installmysql.sh root teadb teauser teapassword DBVM_IP
+    chmod +x /tmp/installmysql.sh
+
+    /tmp/installmysql.sh root teadb teauser teapassword <DBVM_IP>
 
 
 ### Provision App Infrastructure
@@ -83,6 +85,29 @@ curl -location --request GET 'https://devnet.saas.appdynamics.com/zero/v1beta/in
 Get the install command:
 
 curl -s --location --request GET "https://devnet.saas.appdynamics.com//zero/v1beta/install/installCommand?sudo=true&multiline=false&application=NewChaiStore&accessKey=fillmein&serviceUrl=https://devnet.saas.appdynamics.com" --header "Authorization: Bearer <bearer-token>"
+
+SSH to APPVM and Run:
+
+    chmod +x /tmp/rbac.sh
+
+    Execute the download command that you got above with the curl command
+
+    /tmp/rbac.sh 8 1 1 0
+
+    source /home/ec2-user/environment/workshop/application.env
+
+    echo install-cmd > /tmp/installcmd.sh
+
+    sed 's/fillmein/'$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY'/g' /tmp/installcmd.sh > /tmp/installexec.sh
+
+    /opt/appdynamics/zeroagent/bin/zfictl uninstall
+
+    rm -rf /opt/appdynamics/zeroagent
+
+    chmod +x /tmp/installexec.sh
+
+    /tmp/installexec.sh
+
 
 ### Deploy App Services
 
