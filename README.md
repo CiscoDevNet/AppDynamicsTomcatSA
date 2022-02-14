@@ -26,11 +26,13 @@
 
 1. The VM template that you provision in Step 5 below will have a ubuntu image and user "root/Cisco123" provisioned with sudo privileges. You will use this root account to provision the database and app server.
 
-4. You will need access to a vSphere infrastructure with backend compute and storage provisioned. You have 2 VM's provisioned each with 4 vCPU and 8192 memory. Please note the IP address. We will refer to the two VM's as DBVM and APPVM.
+2. You will need access to a vSphere infrastructure with backend compute and storage provisioned. You have 2 VM's provisioned each with 4 vCPU and 8192 memory. Please note the IP address. We will refer to the two VM's as DBVM and APPVM.
 
-5. You will also need an account in AppDynamics SAAS Controller and should have the API Client ID and Client Secret.
+If you prefer to use terraform for your VM provisioning, you can refer to the following repo: https://github.com/prathjan/vm-intersight-terraform
 
-7. You have cloned the following git repository which hosts the scripts that will be used in implementing this use case. 
+3. You will also need an account in AppDynamics SAAS Controller and should have the API Client ID and Client Secret.
+
+4. You have cloned the following git repository which hosts the scripts that will be used in implementing this use case. 
 
 https://github.com/CiscoDevNet/AppDynamicsTomcatSA.git
 
