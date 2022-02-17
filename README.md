@@ -171,7 +171,10 @@ SSH to APPVM and Run:
     /tmp/startsvc.sh ImageService 8081 8006 tools.descartes.teastore.image.war DBVM_IP
 
 
-
-
-
 ### Run App Load
+
+SSH to DBVM and Run: 
+
+    chmod +x /tmp/gentraffic.sh"
+
+    /tmp/gentraffic.sh ${local.appvmip} ${local.appport}
