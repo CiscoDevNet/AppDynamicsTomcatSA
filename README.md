@@ -24,7 +24,7 @@
 
 ### Pre-requisites
 
-1. The VM template that you provision in Step 5 below will have a ubuntu image and user "root/Cisco123" provisioned with sudo privileges. You will use this root account to provision the database and app server.
+1. The VM template that you provision in Step 5 below will have a ubuntu image and user "root/cisco123" provisioned with sudo privileges. You will use this root account to provision the database and app server.
 
 2. You will need access to a vSphere infrastructure with backend compute and storage provisioned. You have 2 VM's provisioned each with 4 vCPU and 8192 memory. Please note the IP address. We will refer to the two VM's as DBVM and APPVM.
 
@@ -41,7 +41,15 @@ https://github.com/CiscoDevNet/AppDynamicsTomcatSA.git
 
 SCP scripts/dbvm/* to DBVM /tmp dir
 
+    scp * root@<DBVM_IP>:/tmp
+
+    password: cisco123
+
 SSH to DBVM and Run:
+
+    ssh root@<DBVM_IP>
+
+    password: cisco123
 
     chmod +x /tmp/installmysql.sh
 
@@ -52,9 +60,25 @@ SSH to DBVM and Run:
 
 SCP scripts/appvm/* to APPVM /tmp dir
 
+    cd appvm
+
+    scp * root@<APPVM_IP>:/tmp
+
+    password: cisco123
+
 SCP scripts/appwars/* to APPVM /tmp dir
 
+    cd appwars
+
+    scp * root@<APPVM_IP>:/tmp
+
+    password: cisco123
+
 SSH to APPVM and Run: 
+
+    ssh root@<DBVM_IP>
+
+    password: cisco123
 
     chmod +x /tmp/appd.sh
 
@@ -62,8 +86,7 @@ SSH to APPVM and Run:
 
     /tmp/appd.sh
 
-    /tmp/tom.sh
-
+    /tmp/tom.sh    
 
 SSH to DBVM and Run: 
 
@@ -74,21 +97,21 @@ SSH to DBVM and Run:
 
 ### Deploy AppDynamics Agent Installer
 
-Get the AppDynamics Agent Installer artifacts from SAAS Controller:
+SSH to APPVM and Run the following:     
 
-Get Bearer token:
+    Get the AppDynamics Agent Installer artifacts from SAAS Controller. You can execute this in any VM or on your local laptop with internet access.
 
-curl --location --request POST 'https://devnet.saas.appdynamics.com/auth/v1/oauth/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=YYYYYY' --data-urlencode 'client_secret=XXXXXX'
+    Get Bearer token:
 
-Get the download commnd:
+    curl --location --request POST 'https://devnet.saas.appdynamics.com/auth/v1/oauth/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=YYYYYY' --data-urlencode 'client_secret=XXXXXX'
 
-curl -location --request GET 'https://devnet.saas.appdynamics.com/zero/v1beta/install/downloadCommand?javaVersion=21.5.0.32605&machineVersion=latest&infraVersion=latest&zeroVersion=latest&multiline=false' --header 'Authorization: Bearer <bearer-token>'
+    Get the download commnd:
 
-Get the install command:
+    curl -location --request GET 'https://devnet.saas.appdynamics.com/zero/v1beta/install/downloadCommand?javaVersion=21.5.0.32605&machineVersion=latest&infraVersion=latest&zeroVersion=latest&multiline=false' --header 'Authorization: Bearer <bearer-token>'
 
-curl -s --location --request GET "https://devnet.saas.appdynamics.com//zero/v1beta/install/installCommand?sudo=true&multiline=false&application=NewChaiStore&accessKey=fillmein&serviceUrl=https://devnet.saas.appdynamics.com" --header "Authorization: Bearer <bearer-token>"
+    Get the install command:
 
-SSH to APPVM and Run:
+    curl -s --location --request GET "https://devnet.saas.appdynamics.com//zero/v1beta/install/installCommand?sudo=true&multiline=false&application=NewChaiStore&accessKey=fillmein&serviceUrl=https://devnet.saas.appdynamics.com" --header "Authorization: Bearer <bearer-token>"
 
     chmod +x /tmp/rbac.sh
 
@@ -98,7 +121,9 @@ SSH to APPVM and Run:
 
     source /home/ec2-user/environment/workshop/application.env
 
-    echo install-cmd > /tmp/installcmd.sh
+    echo install-cmd > /tmp/installcmd.sh. For example: 
+
+        echo "sudo ./zero-agent.sh install --application 'NewChaiStore' --account 'devnet' --access-key 'fillmein' --service-url 'https://devnet.saas.appdynamics.com'" > /tmp/installcmd.sh
 
     sed 's/fillmein/'$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY'/g' /tmp/installcmd.sh > /tmp/installexec.sh
 
@@ -109,6 +134,8 @@ SSH to APPVM and Run:
     chmod +x /tmp/installexec.sh
 
     /tmp/installexec.sh
+
+    chmod -R 777 /opt/appdynamics/zeroagent/agents/java/javaagent/ver21.5.0.32605/lib
 
 
 ### Deploy App Services

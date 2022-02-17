@@ -1,6 +1,6 @@
 sudo chgrp -R cisco '/usr/local/apache/'$1'/'
 sudo chown -R cisco '/usr/local/apache/'$1'/'
-sudo chmod -R 777 '/usr/local/apache/*'
+sudo chmod -R 777 /usr/local/apache
 echo '***file:'$1.service''
 sudo systemctl daemon-reload
 systemctl enable ''$1'.service'
