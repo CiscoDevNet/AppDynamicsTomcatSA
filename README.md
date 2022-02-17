@@ -76,7 +76,7 @@ SCP scripts/appwars/* to APPVM /tmp dir
 
 SSH to APPVM and Run: 
 
-    ssh root@<DBVM_IP>
+    ssh root@<APPVM_IP>
 
     password: cisco123
 
@@ -175,6 +175,6 @@ SSH to APPVM and Run:
 
 SSH to DBVM and Run: 
 
-    chmod +x /tmp/gentraffic.sh"
+    chmod +x /tmp/gentraffic.sh
 
-    /tmp/gentraffic.sh ${local.appvmip} ${local.appport}
+    /tmp/gentraffic.sh <APPVM_IP> 8085
